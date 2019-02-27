@@ -2,4 +2,4 @@ var ChatServer = {
 	rooms: {}
 };
 
-exports = ChatServer;
+exports.ChatServer = ChatServer;

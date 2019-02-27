@@ -3,4 +3,4 @@ var ChatRoom = function()
 	
 };
 
-exports = ChatRoom;
+exports.ChatRoom = ChatRoom;
