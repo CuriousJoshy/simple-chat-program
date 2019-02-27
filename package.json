@@ -1,0 +1,9 @@
+{
+  "name": "chat-program-test",
+  "version": "0.0.1",
+  "description": "A simple chat program with multiple room functionality",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
+}
