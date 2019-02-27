@@ -8,4 +8,4 @@ User.prototype = {
 	
 };
 
-exports.User = User;
+exports = User;
