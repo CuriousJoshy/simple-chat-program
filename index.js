@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var uniqid = require("uniqid");
 
-var User = require("./src/user");
+var User = require("./src/user").User;
 
 app.get('/', function(req, res){	
 	res.sendFile(__dirname + '/index.html');
@@ -26,5 +26,5 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
 	console.log('listening on *:3000');
 	
-	console.log(Object.keys(User));
+	console.log(new User("Josh", uniqid()));
 });
