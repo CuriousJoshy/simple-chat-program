@@ -3,12 +3,56 @@
 	<head>
 		<title>Simple Chat Program</title>
 		
-		<link rel="stylesheet" type="text/css" href="/styles/style.css"/>
+<!--		<link rel="stylesheet" type="text/css" href="/styles/style.css"/>-->
+		
+		<style>
+			.page {
+				display: none;
+			}
+			
+			.active {
+				display: inline-block;
+			}
+			
+			form {
+				min-width: 40vh;
+				
+				display: inline-block;
+				
+				vertical-align: top;
+			}
+			
+			fieldset[disabled] {
+				opacity: 0.75;
+			}
+			
+			legend {
+				text-align: right;
+			}
+			
+			input, select {				
+				text-align: center;
+				
+				float: right
+			}
+			
+			span {
+				float: left;
+				clear: right;
+			}
+			
+			.group {
+				display: inline-block;
+				
+				margin-top: 5px;
+				width: 100%;
+			}
+		</style>
 	</head>
 	
 	<body>
 		<div id="container">
-			<div id="user-creation" class="page active">
+			<div id="user-creation" class="page">
 				<form name="user_creation">
 					<fieldset>
 						<legend>Chat Name</legend>
@@ -19,27 +63,46 @@
 				</form>
 			</div>
 			
-			<div id="room-selection" class="page">
-				<form name="room_selection">
-					<fieldset>
-						<legend>Room Selection</legend>
+			<div id="room-options" class="page active">
+				<form name="room_options">
+					<div class="fieldset-wrapper">
+						<fieldset name="room_selection" disabled  onclick="alert('Help')">
+							<legend>Room Selection</legend>
+
+							<div class="group"><span>Rooms: </span> <select name="active_rooms"></select></div><br>
+							<div class="group"><span>Password: </span> <input name="room_password" type="password"/></div><br>
+							<div class="group"><input type="submit" value="Join Room"/></div>
+						</fieldset>
+					</div>
 					
-						<select name="active_rooms"></select> <input type="submit" value="Join Room"/><br>
-					</fieldset>
-				</form><br>
-				
-				<form name="room_creation">
-					<fieldset>
-						<legend>Room Creation</legend>
-					
-						<input name="room_name" type="text"/><input type="submit" value="Create Room"/>
-					</fieldset>
+					<div class="fieldset-wrapper">
+						<fieldset name="room_creation">
+							<legend>Room Creation</legend>
+
+							<div class="group"><span>Room Name: </span> <input name="room_name" type="text"/></div><br>
+							<div class="group"><span>Room Password: </span> <input name="room_password" type="password"/></div><br>
+							<div class="group"><span>Room Size: </span> <input name="room_size" type="number" value="10" min="0" max="20"/></div><br>
+							<div class="group"><input type="submit" value="Create Room"/></div>
+						</fieldset>
+					</div>
 				</form>
 			</div>
 			
 			<div id="chat-room" class="page"></div>
 		</div>
 	
+		<script>
+			var forms = document.forms, room_options = forms.room_options, room_selection = room_options.room_selection, room_creation = room_options.room_creation;
+			
+			[...document.getElementsByClassName("fieldset-wrapper")].forEach(elem =>
+			{
+				elem.addEventListener("click", e => {
+					e.target.firstElementChild.removeAttribute("disabled");
+				});
+			});
+		</script>
+		
+<!--
 		<script src="/socket.io/socket.io.js"></script>
 		
 		<script>
@@ -72,5 +135,6 @@
 		
 		<script src="/client/user-creation.js"></script>
 		<script src="/client/room-selection.js"></script>
+-->
 	</body>
 </html>
