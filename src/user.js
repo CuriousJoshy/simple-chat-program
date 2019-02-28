@@ -1,11 +1,10 @@
-var User = function(name,id)
+var User = function(name, id, socket)
 {
 	this.name = name;
 	this.id = id;
-};
-
-User.prototype = {
+	this.socket = socket;
 	
+	this.roomId = null;
 };
 
-exports.User = User;
+module.exports = User;
