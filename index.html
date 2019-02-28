@@ -2,14 +2,75 @@
 <html>
 	<head>
 		<title>Simple Chat Program</title>
+		
+		<link rel="stylesheet" type="text/css" href="/styles/style.css"/>
 	</head>
 	
 	<body>
-		<form>
-			Username: <input name="username"/>
-			<input type="submit" value="enter"/>
-		</form>
+		<div id="container">
+			<div id="user-creation" class="page active">
+				<form name="user_creation">
+					<fieldset>
+						<legend>Chat Name</legend>
+						
+						Name: <input name="chat_name" type="text"/>
+						<input type="submit" value="Enter"/>
+					</fieldset>
+				</form>
+			</div>
+			
+			<div id="room-selection" class="page">
+				<form name="room_selection">
+					<fieldset>
+						<legend>Room Selection</legend>
+					
+						<select name="active_rooms"></select> <input type="submit" value="Join Room"/><br>
+					</fieldset>
+				</form><br>
+				
+				<form name="room_creation">
+					<fieldset>
+						<legend>Room Creation</legend>
+					
+						<input name="room_name" type="text"/><input type="submit" value="Create Room"/>
+					</fieldset>
+				</form>
+			</div>
+			
+			<div id="chat-room" class="page"></div>
+		</div>
 	
 		<script src="/socket.io/socket.io.js"></script>
+		
+		<script>
+			var socket = io(), forms = document.forms;
+			
+			var user_creation = forms.user_creation;
+			var room_selection = forms.room_selection;
+			var room_creation = forms.room_creation;
+			
+			function showPage(name)
+			{
+				let requested = document.getElementById(name);
+			
+				if(!requested)
+					return;
+			
+				let current = document.getElementsByClassName("active")[0];
+				
+				if(current)
+					current.classList.remove("active");
+				
+				requested.classList.add("active");
+			}
+			
+			setTimeout(function()
+			{
+				socket.emit("join room", "testing");
+			}, 2000);
+		</script>
+		
+		<script src="/client/user-creation.js"></script>
+		<script src="/client/room-selection.js"></script>
 	</body>
 </html>

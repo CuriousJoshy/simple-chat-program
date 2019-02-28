@@ -1,9 +1,11 @@
-var app = require('express')();
+var express = require("express");
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var uniqid = require("uniqid");
+var Chat = require("./src/chat");
 
-var User = require("./src/user");
+app.use("/style", express.static(__dirname + "/style"));
+app.use("/client", express.static(__dirname + "/client"));
 
 app.get('/', function(req, res){	
 	res.sendFile(__dirname + '/index.html');
@@ -11,6 +13,11 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	console.log('a user connected');
+	
+	socket.on("join room", function()
+	{
+		console.log("Hello World!")
+	});
 	
 	socket.on('chat message', function(msg){
 		io.emit('chat message', msg);
@@ -24,7 +31,5 @@ io.on('connection', function(socket){
 // http.listen(3000, "192.168.1.10");
 
 http.listen(3000, function(){
-	console.log('listening on *:3000');
-	
-	console.log(User);
+	console.log('listening on *:3000');	
 });
