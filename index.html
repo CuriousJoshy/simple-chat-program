@@ -8,14 +8,16 @@
 		<style>
 			.page {
 				display: none;
+				
+				width: 100%;
 			}
 			
 			.active {
 				display: inline-block;
 			}
 			
-			form {
-				min-width: 40vh;
+			.page > form:not([name="chat"]) {
+				min-width: 400px;
 				
 				display: inline-block;
 				
@@ -24,19 +26,24 @@
 			
 			fieldset[disabled] {
 				opacity: 0.75;
+                cursor: pointer;
 			}
 			
 			legend {
 				text-align: right;
 			}
 			
-			input, select {				
+            .page-name {
+                text-align: left;
+            }
+            
+			.group > input, select {				
 				text-align: center;
 				
 				float: right
 			}
 			
-			span {
+			.group > span {
 				float: left;
 				clear: right;
 			}
@@ -47,94 +54,130 @@
 				margin-top: 5px;
 				width: 100%;
 			}
+			
+			ul {
+				list-style-type: none;
+			}
+			
+			form[name="chat"] {
+				vertical-align: middle;
+			}
+			
+			input[name="message"] {
+				display: inline-block;
+				
+				width: calc(90% - 6px);
+				height: 40px;
+			}
+			
+			#send {
+				width: calc(10%);
+				height: 40px;
+				
+				text-align: center;
+				
+				display: inline-block;
+				
+				outline: 1px solid black;
+				
+				vertical-align: middle;
+			}
 		</style>
 	</head>
 	
 	<body>
 		<div id="container">
-			<div id="user-creation" class="page">
-				<form name="user_creation">
+			<div id="create-user" class="page">
+				<form name="create_user">
 					<fieldset>
-						<legend>Chat Name</legend>
+						<legend class="page-name">Create User</legend>
 						
-						Name: <input name="chat_name" type="text"/>
-						<input type="submit" value="Enter"/>
+                        <div class="group"><span>Name:</span> <input name="chat_name" type="text"/></div><br>
+						<div class="group"><input type="submit" value="Enter"/></div>
 					</fieldset>
 				</form>
 			</div>
 			
-			<div id="room-options" class="page active">
-				<form name="room_options">
-					<div class="fieldset-wrapper">
-						<fieldset name="room_selection" disabled  onclick="alert('Help')">
-							<legend>Room Selection</legend>
+			<div id="rooms" class="page">
+				<form name="rooms">
+                    <fieldset>
+                        <legend class="page-name">Rooms</legend>
+                        
+                        <div class="fieldset-wrapper">
+                            <fieldset name="room_selection">
+                                <legend>Room Selection</legend>
 
-							<div class="group"><span>Rooms: </span> <select name="active_rooms"></select></div><br>
-							<div class="group"><span>Password: </span> <input name="room_password" type="password"/></div><br>
-							<div class="group"><input type="submit" value="Join Room"/></div>
-						</fieldset>
-					</div>
-					
-					<div class="fieldset-wrapper">
-						<fieldset name="room_creation">
-							<legend>Room Creation</legend>
+                                <div class="group"><span>Rooms: </span> <select name="active_rooms"></select></div><br>
+                                <div class="group"><span>Password: </span> <input name="room_password" type="password"/></div><br>
+                                <div class="group"><input type="submit" value="Join Room"/></div>
+                            </fieldset>
+                        </div>
 
-							<div class="group"><span>Room Name: </span> <input name="room_name" type="text"/></div><br>
-							<div class="group"><span>Room Password: </span> <input name="room_password" type="password"/></div><br>
-							<div class="group"><span>Room Size: </span> <input name="room_size" type="number" value="10" min="0" max="20"/></div><br>
-							<div class="group"><input type="submit" value="Create Room"/></div>
-						</fieldset>
-					</div>
+                        <div class="fieldset-wrapper">
+                            <fieldset name="room_creation" disabled>
+                                <legend>Room Creation</legend>
+
+                                <div class="group"><span>Room Name: </span> <input name="room_name" type="text"/></div><br>
+                                <div class="group"><span>Room Password: </span> <input name="room_password" type="password"/></div><br>
+                                <div class="group"><span>Room Size: </span> <input name="room_size" type="number" value="10" min="0" max="20"/></div><br>
+                                <div class="group"><input type="submit" value="Create Room"/></div>
+                            </fieldset>
+                        </div>
+                    </fieldset>
 				</form>
 			</div>
 			
-			<div id="chat-room" class="page"></div>
+			<div id="chat-room" class="page">
+				<ul>
+					<li></li>
+				</ul>
+				
+                    <form name="chat">
+                        <input name="message" type="text"/><div id="send">Send</div>
+					</form>
+            </div>
 		</div>
 	
 		<script>
-			var forms = document.forms, room_options = forms.room_options, room_selection = room_options.room_selection, room_creation = room_options.room_creation;
-			
-			[...document.getElementsByClassName("fieldset-wrapper")].forEach(elem =>
-			{
-				elem.addEventListener("click", e => {
-					e.target.firstElementChild.removeAttribute("disabled");
-				});
-			});
-		</script>
-		
-<!--
-		<script src="/socket.io/socket.io.js"></script>
-		
-		<script>
-			var socket = io(), forms = document.forms;
-			
-			var user_creation = forms.user_creation;
-			var room_selection = forms.room_selection;
-			var room_creation = forms.room_creation;
+			var forms = document.forms, chat = forms.chat;
 			
 			function showPage(name)
 			{
-				let requested = document.getElementById(name);
-			
-				if(!requested)
+				let page = document.getElementById(name);
+				
+				if(!page)
 					return;
-			
+				
 				let current = document.getElementsByClassName("active")[0];
 				
 				if(current)
 					current.classList.remove("active");
 				
-				requested.classList.add("active");
+				page.classList.add("active");
 			}
 			
-			setTimeout(function()
+			[...document.getElementsByClassName("fieldset-wrapper")].forEach(elem =>
 			{
-				socket.emit("join room", "testing");
-			}, 2000);
+				elem.addEventListener("click", function(e)
+                {
+                    let source = e.currentTarget;
+                                        
+                    source.firstElementChild.removeAttribute("disabled");
+                    
+                    (source.nextElementSibling || source.previousElementSibling).firstElementChild.setAttribute("disabled","true");
+                    
+                    e.target.focus();
+                });
+			});
+			
+			chat.addEventListener("submit", function(e)
+			{
+				e.preventDefault();
+				
+				chat.message.value = "";
+			});
+			
+			showPage("chat-room");
 		</script>
-		
-		<script src="/client/user-creation.js"></script>
-		<script src="/client/room-selection.js"></script>
--->
-	</body>
+    </body>
 </html>
