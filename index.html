@@ -63,15 +63,22 @@
 				vertical-align: middle;
 			}
 			
-			input[name="message"] {
+			#message {
 				display: inline-block;
 				
-				width: calc(90% - 6px);
+				width: calc(90%);
 				height: 40px;
+				padding: 1px;
+				
+				vertical-align: middle;
+				
+				outline: 1px solid black;
+				
+				float: left;
 			}
 			
 			#send {
-				width: calc(10%);
+				width: calc(10% - 12px);
 				height: 40px;
 				
 				text-align: center;
@@ -80,7 +87,20 @@
 				
 				outline: 1px solid black;
 				
+				padding: 1px;
+				
 				vertical-align: middle;
+				
+				float: left;
+			}
+			
+			#send > span {
+				display: inline-block;
+				vertical-align: middle;
+			}
+			
+			#send:not(.disabled):hover {
+				cursor: pointer;
 			}
 		</style>
 	</head>
@@ -132,9 +152,10 @@
 					<li></li>
 				</ul>
 				
-                    <form name="chat">
-                        <input name="message" type="text"/><div id="send">Send</div>
-					</form>
+				<div id="message" contenteditable></div>
+				<div id="send">
+					<span>Send</span>
+				</div>
             </div>
 		</div>
 	
@@ -170,12 +191,12 @@
                 });
 			});
 			
-			chat.addEventListener("submit", function(e)
-			{
-				e.preventDefault();
-				
-				chat.message.value = "";
-			});
+//			chat.addEventListener("submit", function(e)
+//			{
+//				e.preventDefault();
+//				
+//				chat.message.value = "";
+//			});
 			
 			showPage("chat-room");
 		</script>
