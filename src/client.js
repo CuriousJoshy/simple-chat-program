@@ -6,10 +6,8 @@ var Client = function(name,socket)
 	this.id = uniqid();
 	
 	this.socket = socket;
-};
-
-Client.prototype = {
 	
+	this.room = null;
 };
 
 module.exports = Client;
