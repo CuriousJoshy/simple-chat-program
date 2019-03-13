@@ -13,12 +13,13 @@ var ChatRoom = function(name)
 ChatRoom.prototype = {
 	join: function(client)
 	{
-		if(this.clients.includes(client))
+		if(!client.room && this.clients.includes(client))
 			return false;
 		
 		this.clients.push(client);
 		
 		client.socket.join(this.id);
+		cleint.room = this.id;
 		
 		return true;
 	},
@@ -43,7 +44,7 @@ ChatRoom.prototype = {
 		
 		this.clients.forEach(function(client)
 		{
-			self.leave(client);
+			self.leave(io, client);
 		});
 	}
 };

@@ -48,6 +48,42 @@ var Chat = {
 		}
 		
 		return false;
+	},
+	
+	getRoom: function(id)
+	{
+		return rooms.find(function(room)
+		{
+			return room.id == id;
+		});
+	},
+	
+	joinRoom: function(id, client)
+	{
+		var room = this.getRoom(id);
+		
+		if(!room)
+			return false;
+		
+		room.join(client);
+		
+		return true;
+	},
+	
+	leaveRoom: function(client)
+	{
+		if(!client.room)
+			return false;
+		
+		var room = this.getRoom(id);
+		
+		if(!room)
+			return false;
+		
+		
+		room.leave(client);
+		
+		return true;
 	}
 };
 
