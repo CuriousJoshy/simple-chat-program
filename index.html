@@ -90,6 +90,7 @@
 				padding: 1px;
 				
 				vertical-align: middle;
+				line-height: 40px;
 				
 				float: left;
 			}
@@ -101,6 +102,20 @@
 			
 			#send:not(.disabled):hover {
 				cursor: pointer;
+			}
+			
+			#chat-box {
+				position: absolute;
+				
+				display: inline-block;
+				
+				float: left;
+				
+				top: 100%;
+				
+				transform: translate(0, -130%);
+				
+				width: calc(100% - 8px);
 			}
 		</style>
 	</head>
@@ -148,13 +163,14 @@
 			</div>
 			
 			<div id="chat-room" class="page">
-				<ul>
-					<li></li>
-				</ul>
-				
-				<div id="message" contenteditable></div>
-				<div id="send">
-					<span>Send</span>
+				<!-- <ul> -->
+					<!-- <li></li> -->
+				<!-- </ul> -->
+				<div id="chat-box" class="group">
+					<div id="message" contenteditable></div>
+					<div id="send">
+						<span>Send</span>
+					</div>
 				</div>
             </div>
 		</div>
@@ -182,7 +198,7 @@
 				elem.addEventListener("click", function(e)
                 {
                     let source = e.currentTarget;
-                                        
+					
                     source.firstElementChild.removeAttribute("disabled");
                     
                     (source.nextElementSibling || source.previousElementSibling).firstElementChild.setAttribute("disabled","true");
